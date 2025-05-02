@@ -1,0 +1,65 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
+
+@import "tailwindcss";
+:root {
+  --primary-color: #7a9af1;
+  --secondary-color: #4a71dd;
+
+  --neutral-0: hsl(0, 0%, 100%);
+  --neutral-50: hsl(0, 6%, 90%);
+  --neutral-100: hsl(0, 3%, 78%);
+  --neutral-200: hsl(0, 0%, 59%);
+  --neutral-300: hsl(0, 1%, 45%);
+  --neutral-800: hsl(0, 0%, 17%);
+  --neutral-900: hsl(0, 0%, 0%);
+
+  --black: #000;
+  --white: #fff;
+  --red-100: #dc6060;
+  --main-bg: #f4f3f3;
+}
+
+.dark {
+  --neutral-0: hsl(0, 0%, 17%);
+  --neutral-50: hsl(0, 0%, 16%);
+  --neutral-100: hsl(210, 4%, 31%);
+  --neutral-300: hsl(0, 2%, 80%);
+  --neutral-900: hsl(0, 0%, 100%);
+  --main-bg: #040404;
+}
+*,
+::after,
+::before {
+  font-family: "Rubik", sans-serif;
+  box-sizing: border-box;
+}
+html,
+body {
+  transition: all 0.3s ease-in;
+}
+button,
+a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.4s ease-in-out;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+p {
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+li {
+  list-style: none;
+}
+input:focus,
+input:hover {
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
