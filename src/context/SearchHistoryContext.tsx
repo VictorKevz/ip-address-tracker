@@ -25,6 +25,13 @@ export const SearchHistoryProvider = ({ children }: ProviderProps) => {
       return [...prev, newSearch];
     });
   };
+  const deleteEntry = (currentIp: string) => {
+    if (searchHistory.length <= 1) return;
+
+    return setSearchHistory((prev) =>
+      prev.filter((item) => item.ip != currentIp)
+    );
+  };
   return (
     <SearchHistoryContext.Provider
       value={{
@@ -32,6 +39,7 @@ export const SearchHistoryProvider = ({ children }: ProviderProps) => {
         isDropDownOpen,
         toggleDropDown,
         updateSearchHistory,
+        onDelete: deleteEntry,
       }}
     >
       {children}

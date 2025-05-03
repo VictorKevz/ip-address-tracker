@@ -70,7 +70,6 @@ export const SearchProvider = ({ children }: ProviderProps) => {
       if (!response.ok)
         throw new Error("Failed to fetch ip address location data");
       const data = await response.json();
-      console.log("Data", data);
       setIpState({
         ip: data.ip,
         country: data?.location?.country,

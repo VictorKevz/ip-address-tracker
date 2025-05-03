@@ -13,4 +13,5 @@ export interface SearchHistoryContextType {
   isDropDownOpen: boolean;
   toggleDropDown: () => void;
   updateSearchHistory: (newSearch: SearchHistoryItem) => void;
+  onDelete: (currentIp: string) => void;
 }
