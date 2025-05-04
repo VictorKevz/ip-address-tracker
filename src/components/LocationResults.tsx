@@ -12,13 +12,13 @@ const LocationResults = () => {
   };
 
   return (
-    <div className="max-w-screen-lg w-full flex flex-col gap-2 mt-[-5rem] z-50 px-6 relative">
+    <div className="max-w-screen-lg w-full flex flex-col gap-2 mt-8 mb-[-8rem] relative">
       {ipState.isLoading ? (
         <div className="absolute left-[50%]">
           <Spinner />
         </div>
       ) : (
-        <div className="w-full flex flex-col items-center min-h-[10rem] sm:flex-row justify-between gap-6 px-5 bg-[var(--neutral-50)] rounded-xl py-5 shadow-xl border border-[var(--neutral-100)] relative">
+        <div className="w-full flex flex-col items-center min-h-[10rem] sm:flex-row justify-between gap-6 px-5 bg-[var(--neutral-50)] rounded-xl py-5 shadow-xl border border-[var(--neutral-100)] relative z-50">
           {Object.entries(data).map(([key, value], i) => (
             <p
               key={key}

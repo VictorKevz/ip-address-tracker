@@ -1,18 +1,16 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from "react";
-import {
-  IpState,
-  IpSearchContextType,
-  IpSearchProviderProps,
-} from "../types/IpSearch";
+import { IpState, IpSearchContextType, ProviderProps } from "../types/IpSearch";
 import { isIP } from "is-ip";
 import { isDomain } from "../utils/regex";
+import { useSearchHistory } from "./SearchHistoryContext";
+import { SearchHistoryItem } from "../types/searchHistory";
 
 export const IpSearchContext = createContext<IpSearchContextType | undefined>(
   undefined
 );
 
-export const SearchProvider = ({ children }: IpSearchProviderProps) => {
+export const SearchProvider = ({ children }: ProviderProps) => {
   const [ipState, setIpState] = useState<IpState>({
     ip: null,
     country: null,
@@ -26,6 +24,7 @@ export const SearchProvider = ({ children }: IpSearchProviderProps) => {
   });
   const [inputValue, setInputValue] = useState<string>(ipState?.ip || "");
   const [isInputValid, setInputValid] = useState<boolean>(true);
+  const { updateSearchHistory } = useSearchHistory();
   const apiKey = import.meta.env.VITE_API_KEY;
   const baseUrl = `https://geo.ipify.org/api/v2/country,city?apiKey=${apiKey}`;
   const handleSearchInput = (query: string) => {
@@ -71,7 +70,6 @@ export const SearchProvider = ({ children }: IpSearchProviderProps) => {
       if (!response.ok)
         throw new Error("Failed to fetch ip address location data");
       const data = await response.json();
-      console.log("Data", data);
       setIpState({
         ip: data.ip,
         country: data?.location?.country,
@@ -99,7 +97,9 @@ export const SearchProvider = ({ children }: IpSearchProviderProps) => {
       });
     }
   };
-
+  const updateIpState = (currentItem: SearchHistoryItem) => {
+    setIpState({ ...currentItem, error: null, isLoading: false });
+  };
   useEffect(() => {
     fetchData(baseUrl);
   }, [baseUrl]);
@@ -107,8 +107,19 @@ export const SearchProvider = ({ children }: IpSearchProviderProps) => {
   useEffect(() => {
     if (ipState.ip) {
       setInputValue(ipState.ip);
+      const newItem = {
+        ip: ipState.ip || "",
+        country: ipState?.country || "",
+        region: ipState?.region || "",
+        timezone: ipState?.timezone || "",
+        isp: ipState?.isp || "",
+        lat: ipState?.lat || 0,
+        lng: ipState?.lng || 0,
+      };
+      updateSearchHistory(newItem);
     }
-  }, [ipState.ip]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ipState]);
   return (
     <IpSearchContext.Provider
       value={{
@@ -117,6 +128,7 @@ export const SearchProvider = ({ children }: IpSearchProviderProps) => {
         onSubmit: handleSubmit,
         isInputValid,
         inputValue,
+        updateIpState,
       }}
     >
       {children}

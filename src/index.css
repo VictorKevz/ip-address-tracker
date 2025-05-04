@@ -16,6 +16,7 @@
   --black: #000;
   --white: #fff;
   --red-100: #dc6060;
+  --green-100: #1fb05c;
   --main-bg: #f4f3f3;
 }
 
@@ -62,4 +63,7 @@ input:hover {
   outline: none;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
+}
+.dropdown {
+  z-index: 500 !important;
 }

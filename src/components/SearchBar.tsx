@@ -11,12 +11,12 @@ const SearchBar = () => {
   };
   return (
     <form
-      className="max-w-xl w-full flex items-center shadow-2xl mt-8 relative"
+      className="max-w-xl w-full flex items-center shadow-2xl relative"
       onSubmit={onSubmit}
     >
       <label
         htmlFor="searchBar"
-        className="w-full flex items-center bg-[var(--neutral-50)] rounded-l-2xl relative"
+        className="w-full flex items-center bg-[var(--neutral-50)] rounded-l-lg relative"
       >
         <input
           type="text"
@@ -40,7 +40,7 @@ const SearchBar = () => {
       </label>
       <button
         type="submit"
-        className={`w-14 h-14 bg-[var(--primary-color)] text-[var(--white)] rounded-r-2xl ${
+        className={`w-14 h-14 bg-[var(--primary-color)] text-[var(--white)] rounded-r-lg ${
           !isInputValid && "bg-[var(--red-100)]"
         }`}
       >
