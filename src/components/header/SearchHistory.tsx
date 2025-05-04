@@ -1,4 +1,9 @@
-import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
+import {
+  CancelRounded,
+  CheckCircle,
+  KeyboardArrowDown,
+  KeyboardArrowUp,
+} from "@mui/icons-material";
 import { useSearchHistory } from "../../context/SearchHistoryContext";
 import { useSearchContext } from "../../context/IpSearchContext";
 import { SearchHistoryItem } from "../../types/searchHistory";
@@ -42,25 +47,34 @@ export const SearchHistory = () => {
                   key={item.ip}
                   className={`w-full flex items-center justify-between gap-4 text-[var(--neutral-900)] border  p-2 rounded-lg ${
                     isCurrent
-                      ? "border-[var(--primary-color)] bg-[#7a9af1]/40"
+                      ? "border-[var(--primary-color)] bg-[#7a9af1]/10"
                       : "border-black/20 bg-black/5"
                   }`}
                 >
-                  <span className="text-sm">{`${item?.region}, ${item?.country} - ${item?.ip}`}</span>
-                  <span className="flex items-center gap-3">
+                  <span className="text-sm min-w-max">{`${item?.region}, ${item?.country} - ${item?.ip}`}</span>
+                  <span className="flex items-center gap-1">
                     <button
                       type="button"
                       onClick={() => handleStateUpdate(item)}
-                      className="h-10 bg-[var(--primary-color)] px-3.5 rounded-lg text-white"
                     >
-                      Apply
+                      <span className="sm:hidden text-[var(--primary-color)]">
+                        <CheckCircle fontSize="medium" />
+                      </span>
+                      <span className="hidden sm:flex items-center justify-center h-10 bg-[var(--primary-color)] px-3.5 rounded-lg text-white">
+                        Apply
+                      </span>
                     </button>
                     <button
                       type="button"
                       onClick={() => onDelete(item.ip)}
-                      className="h-10 px-3.5 bg-[var(--red-100)] rounded-lg text-white"
+                      className=""
                     >
-                      Remove
+                      <span className="sm:hidden text-[var(--red-100)]">
+                        <CancelRounded fontSize="medium" />
+                      </span>
+                      <span className="hidden sm:flex items-center justify-center h-10 bg-[var(--red-100)] px-3.5 rounded-lg text-white">
+                        Remove
+                      </span>
                     </button>
                   </span>
                 </li>
