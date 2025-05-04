@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import {
   SearchHistoryContextType,
   SearchHistoryItem,
@@ -11,11 +11,32 @@ export const SearchHistoryContext = createContext<
 >(undefined);
 
 export const SearchHistoryProvider = ({ children }: ProviderProps) => {
-  const [searchHistory, setSearchHistory] = useState<SearchHistoryItem[]>([]);
+  const getInitialSearchHistory = (): SearchHistoryItem[] => {
+    if (typeof localStorage !== "undefined") {
+      const saved = localStorage.getItem("searchHistory");
+      if (saved !== null) {
+        try {
+          return JSON.parse(saved);
+        } catch (error) {
+          console.error("Failed to parse search history:", error);
+        }
+      }
+    }
+    return [];
+  };
+  const [searchHistory, setSearchHistory] = useState<SearchHistoryItem[]>(
+    getInitialSearchHistory
+  );
   const [isDropDownOpen, setDropDown] = useState<boolean>(false);
+  const [showDialog, setDialog] = useState<boolean>(false);
+  const [currentIp, setCurrentIp] = useState<string>("");
 
   const toggleDropDown = () => {
     setDropDown(!isDropDownOpen);
+  };
+  const toggleDialog = (currentIp: string) => {
+    setDialog(!showDialog);
+    setCurrentIp(currentIp);
   };
 
   const updateSearchHistory = (newSearch: SearchHistoryItem) => {
@@ -25,13 +46,16 @@ export const SearchHistoryProvider = ({ children }: ProviderProps) => {
       return [...prev, newSearch];
     });
   };
+
   const deleteEntry = (currentIp: string) => {
     if (searchHistory.length <= 1) return;
-
-    return setSearchHistory((prev) =>
-      prev.filter((item) => item.ip != currentIp)
-    );
+    setSearchHistory((prev) => prev.filter((item) => item.ip != currentIp));
+    setDialog(false);
   };
+
+  useEffect(() => {
+    localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+  }, [searchHistory]);
   return (
     <SearchHistoryContext.Provider
       value={{
@@ -40,6 +64,9 @@ export const SearchHistoryProvider = ({ children }: ProviderProps) => {
         toggleDropDown,
         updateSearchHistory,
         onDelete: deleteEntry,
+        showDialog,
+        toggleDialog,
+        currentIp,
       }}
     >
       {children}

@@ -18,7 +18,7 @@ const LocationResults = () => {
           <Spinner />
         </div>
       ) : (
-        <div className="w-full flex flex-col items-center min-h-[10rem] sm:flex-row justify-between gap-6 px-5 bg-[var(--neutral-50)] rounded-xl py-5 shadow-xl border border-[var(--neutral-100)] relative z-50">
+        <div className="w-full flex flex-col items-center min-h-[10rem] md:flex-row justify-between gap-6 px-5 bg-[var(--neutral-50)] rounded-xl py-5 shadow-xl border border-[var(--neutral-100)] relative z-50">
           {Object.entries(data).map(([key, value], i) => (
             <p
               key={key}
@@ -30,7 +30,7 @@ const LocationResults = () => {
               <span className="font-bold uppercase text-xs text-[var(--neutral-300)] tracking-[1.75px]">
                 {key.replace(/_/g, " ")}
               </span>
-              <span className="text-lg md:text-2xl font-medium text-[var(--neutral-900)]">
+              <span className="text-lg md:text-xl lg:2xl font-medium text-[var(--neutral-900)]">
                 {value}
               </span>
             </p>

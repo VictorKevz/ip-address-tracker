@@ -38,7 +38,7 @@ const Header = () => {
     bgObj[isMobile ? "mobile" : "desktop"][isDark ? "dark" : "light"];
   return (
     <header
-      className="w-full min-h-74 bg-center bg-cover 2xl:bg-bottom bg-no-repeat flex flex-col items-center py-8 px-6 relative z-50"
+      className="w-full min-h-74 bg-center bg-cover bg-no-repeat flex flex-col items-center py-8 px-6 relative z-50"
       style={{ backgroundImage: `url(${bgImg})` }}
     >
       <ToggleButton />

@@ -37,9 +37,10 @@
 html,
 body {
   transition: all 0.3s ease-in;
+  margin: 0;
+  padding: 0;
 }
-button,
-a {
+button {
   display: flex;
   align-items: center;
   justify-content: center;
