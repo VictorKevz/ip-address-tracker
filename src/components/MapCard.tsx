@@ -12,9 +12,9 @@ import { useTheme } from "../context/ThemeContext";
 import { useEffect } from "react";
 
 export const MapCard = () => {
-  const { ipState } = useSearchContext();
+  const { ipState, uiState } = useSearchContext();
   const { theme } = useTheme();
-  const { lng, lat, isLoading } = ipState;
+  const { lng, lat } = ipState;
 
   const lightMapUrl =
     "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
@@ -23,7 +23,7 @@ export const MapCard = () => {
 
   return (
     <section className="w-full flex items-center relative mt-[-7rem] z-10">
-      {isLoading ? (
+      {uiState.isLoading ? (
         <div className="absolute left-[50%] bottom-[-18rem]">
           <Spinner />
         </div>

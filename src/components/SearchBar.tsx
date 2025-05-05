@@ -4,7 +4,7 @@ import { ChangeEvent } from "react";
 import { Spinner } from "./Spinner";
 
 const SearchBar = () => {
-  const { ipState, inputValue, handleSearchInput, onSubmit, isInputValid } =
+  const { uiState, inputValue, handleSearchInput, onSubmit, isInputValid } =
     useSearchContext();
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     handleSearchInput(e.target.value);
@@ -32,7 +32,7 @@ const SearchBar = () => {
         {!isInputValid && (
           <Error className="text-[var(--red-100)] absolute right-4" />
         )}
-        {ipState.isLoading && (
+        {uiState.isLoading && (
           <div className="absolute left-[50%]">
             <Spinner />
           </div>

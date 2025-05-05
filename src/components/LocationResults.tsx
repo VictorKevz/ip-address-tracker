@@ -3,7 +3,7 @@ import { useSearchContext } from "../context/IpSearchContext";
 import { Spinner } from "./Spinner";
 
 const LocationResults = () => {
-  const { ipState } = useSearchContext();
+  const { ipState, uiState } = useSearchContext();
   const data = {
     ip_address: ipState.ip,
     location: `${ipState.region}, ${ipState.country} `,
@@ -13,7 +13,7 @@ const LocationResults = () => {
 
   return (
     <div className="max-w-screen-lg w-full flex flex-col gap-2 mt-8 mb-[-8rem] relative">
-      {ipState.isLoading ? (
+      {uiState.isLoading ? (
         <div className="absolute left-[50%]">
           <Spinner />
         </div>
