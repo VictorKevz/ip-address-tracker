@@ -26,6 +26,7 @@ export const SearchHistoryProvider = ({ children }: ProviderProps) => {
   );
   const [isDropDownOpen, setDropDown] = useState<boolean>(false);
   const [showDialog, setDialog] = useState<boolean>(false);
+  const [showAlert, setAlert] = useState<boolean>(false);
   const [currentIp, setCurrentIp] = useState<string>("");
 
   const toggleDropDown = () => {
@@ -48,6 +49,11 @@ export const SearchHistoryProvider = ({ children }: ProviderProps) => {
     if (searchHistory.length <= 1) return;
     setSearchHistory((prev) => prev.filter((item) => item.ip != currentIp));
     setDialog(false);
+    setAlert(true);
+    const timeOutId = setInterval(() => {
+      setAlert(false);
+    }, 3500);
+    return () => clearInterval(timeOutId);
   };
 
   useEffect(() => {
@@ -64,6 +70,7 @@ export const SearchHistoryProvider = ({ children }: ProviderProps) => {
         showDialog,
         toggleDialog,
         currentIp,
+        showAlert,
       }}
     >
       {children}

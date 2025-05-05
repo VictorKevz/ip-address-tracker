@@ -9,4 +9,5 @@ export interface SearchHistoryContextType {
   updateSearchHistory: (newSearch: SearchItem) => void;
   onDelete: (currentIp: string) => void;
   currentIp: string;
+  showAlert: boolean;
 }
