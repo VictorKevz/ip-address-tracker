@@ -82,7 +82,9 @@ export const SearchHistory = () => {
                       <span className="sm:hidden text-[var(--red-100)] disabled:text-[var(--neutral-300)]">
                         <CancelRounded fontSize="medium" />
                       </span>
-                      <span className="hidden sm:flex">Remove</span>
+                      <span className="hidden sm:flex text-white hover:text-[var(--neutral-900)]">
+                        Remove
+                      </span>
                     </button>
                   </span>
                 </li>

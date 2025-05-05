@@ -61,7 +61,11 @@ export const SearchProvider = ({ children }: ProviderProps) => {
     } else if (isDomain(input)) {
       url = `${baseUrl}&domain=${input}`;
     }
-
+    setUIState((prev) => ({
+      ...prev,
+      isLoading: true,
+      error: null,
+    }));
     fetchData(url);
 
     // Reset state after data is fetched
@@ -101,6 +105,7 @@ export const SearchProvider = ({ children }: ProviderProps) => {
     setIpState(currentItem);
   };
   useEffect(() => {
+    //checks if there's data already and if not it fetches the data
     if (ipState.ip === "") {
       fetchData(baseUrl);
     } else {
@@ -124,6 +129,7 @@ export const SearchProvider = ({ children }: ProviderProps) => {
         lng: ipState?.lng,
       };
       updateSearchHistory(newItem);
+      setUIState({ isLoading: false, error: "" });
     }
   }, [ipState]);
   return (
