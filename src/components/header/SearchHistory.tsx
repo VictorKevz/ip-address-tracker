@@ -6,13 +6,13 @@ import {
 } from "@mui/icons-material";
 import { useSearchHistory } from "../../context/SearchHistoryContext";
 import { useSearchContext } from "../../context/IpSearchContext";
-import { SearchHistoryItem } from "../../types/searchHistory";
+import { SearchItem } from "../../types/IpSearch";
 
 export const SearchHistory = () => {
   const { isDropDownOpen, toggleDropDown, searchHistory, toggleDialog } =
     useSearchHistory();
   const { updateIpState, ipState } = useSearchContext();
-  const handleStateUpdate = (item: SearchHistoryItem) => {
+  const handleStateUpdate = (item: SearchItem) => {
     updateIpState(item);
     toggleDropDown();
   };
@@ -26,12 +26,12 @@ export const SearchHistory = () => {
       >
         History
         {isDropDownOpen ? (
-          <KeyboardArrowDown
+          <KeyboardArrowUp
             className="text-[var(--primary-color)]"
             fontSize="large"
           />
         ) : (
-          <KeyboardArrowUp
+          <KeyboardArrowDown
             className="text-[var(--primary-color)]"
             fontSize="large"
           />
@@ -66,7 +66,7 @@ export const SearchHistory = () => {
                     <button
                       type="button"
                       onClick={() => handleStateUpdate(item)}
-                      className="font-medium sm:h-10 sm:bg-[var(--primary-color)] sm:px-3.5 sm:rounded-lg sm:text-white hover:border hover:border-[var(--primary-color)] hover:bg-inherit hover:text-[var(--neutral-900)]"
+                      className="font-medium border border-transparent sm:h-10 sm:bg-[var(--primary-color)] sm:px-3.5 sm:rounded-lg sm:text-white hover:border-[var(--primary-color)] hover:bg-inherit hover:text-[var(--neutral-900)]"
                     >
                       <span className="sm:hidden text-[var(--primary-color)]">
                         <CheckCircle fontSize="medium" />
@@ -77,9 +77,9 @@ export const SearchHistory = () => {
                       type="button"
                       disabled={canDelete}
                       onClick={() => toggleDialog(item.ip)}
-                      className="disabled:cursor-not-allowed disabled:bg-[var(--neutral-300)] sm:bg-[var(--red-100)] sm:rounded-lg sm:text-[var(--black)] sm:h-10 sm:px-3.5 font-medium"
+                      className="disabled:cursor-not-allowed disabled:bg-[var(--neutral-300)] border border-transparent sm:hover:border sm:bg-[var(--red-100)] sm:rounded-lg sm:text-[var(--black)] sm:h-10 sm:px-3.5 font-medium sm:hover:border-[var(--red-100)] sm:hover:bg-transparent"
                     >
-                      <span className="sm:hidden text-[var(--red-100)] disabled:text-[var(--neutral-300)] disabled:cursor-not-allowed">
+                      <span className="sm:hidden text-[var(--red-100)] disabled:text-[var(--neutral-300)]">
                         <CancelRounded fontSize="medium" />
                       </span>
                       <span className="hidden sm:flex">Remove</span>

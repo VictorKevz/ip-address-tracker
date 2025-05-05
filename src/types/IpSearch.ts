@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import { SearchHistoryItem } from "./searchHistory";
 
 export interface SearchItem {
   ip: string;
@@ -29,7 +28,7 @@ export interface IpSearchContextType {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   isInputValid: boolean;
   inputValue: string;
-  updateIpState: (currentItem: SearchHistoryItem) => void;
+  updateIpState: (currentItem: SearchItem) => void;
   uiState: SearchUIState;
 }
 

@@ -50,6 +50,7 @@ const Header = () => {
         <SearchHistory />
       </div>
       <LocationResults />
+
       <div className="absolute top-0 left-0 right-0 bottom-0 w-full bg-black/15 backdrop-blur-[8px] z-[-1]"></div>
     </header>
   );

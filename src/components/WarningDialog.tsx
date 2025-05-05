@@ -13,8 +13,8 @@ const WarningDialog = () => {
       <div className="z-500 w-full min-h-screen fixed top-0 left-0 flex items-center justify-center bg-black/60 backdrop-blur-[2px] transition-all duration-300 ease-in-out px-4">
         <motion.dialog
           aria-modal="true"
-          aria-labelledby="modal-title"
-          aria-describedby="modal-description"
+          aria-labelledby="dialog-title"
+          aria-describedby="dialog-description"
           tabIndex={-1}
           variants={viewVariants(30)}
           initial="hidden"
@@ -28,13 +28,13 @@ const WarningDialog = () => {
             </span>
             <div className="flex flex-col gap-1">
               <h3
-                id="modal-title"
+                id="dialog-title"
                 className="text-xl sm:text-2xl text-[var(--neutral-900)] font-bold"
               >
                 Confirm deletion!
               </h3>
               <p
-                id="modal-description"
+                id="dialog-description"
                 className="text-[var(--neutral-300)] text-xs sm:text-base"
               >
                 Are you sure you want to delete IP Address:
@@ -65,7 +65,7 @@ const WarningDialog = () => {
             type="button"
             onClick={() => toggleDialog(currentIp)}
             aria-label="Close dialog"
-            className="absolute right-4 top-4 w-8 h-8 rounded-lg border border-[var(--neutral-200)] text-[var(--neutral-900)] hover:bg-[var(--neutral-200)]"
+            className="absolute right-4 top-4 w-8 h-8 rounded-lg border border-[var(--neutral-200)] text-[var(--neutral-900)] hover:bg-[var(--secondary-color)] hover:border-transparent hover:text-white"
           >
             <Close fontSize="medium" aria-hidden="true" />
           </button>

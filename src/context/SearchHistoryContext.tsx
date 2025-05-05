@@ -1,17 +1,14 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from "react";
-import {
-  SearchHistoryContextType,
-  SearchHistoryItem,
-} from "../types/searchHistory";
-import { ProviderProps } from "../types/IpSearch";
+import { SearchHistoryContextType } from "../types/searchHistory";
+import { ProviderProps, SearchItem } from "../types/IpSearch";
 
 export const SearchHistoryContext = createContext<
   SearchHistoryContextType | undefined
 >(undefined);
 
 export const SearchHistoryProvider = ({ children }: ProviderProps) => {
-  const getInitialSearchHistory = (): SearchHistoryItem[] => {
+  const getInitialSearchHistory = (): SearchItem[] => {
     if (typeof localStorage !== "undefined") {
       const saved = localStorage.getItem("searchHistory");
       if (saved !== null) {
@@ -24,7 +21,7 @@ export const SearchHistoryProvider = ({ children }: ProviderProps) => {
     }
     return [];
   };
-  const [searchHistory, setSearchHistory] = useState<SearchHistoryItem[]>(
+  const [searchHistory, setSearchHistory] = useState<SearchItem[]>(
     getInitialSearchHistory
   );
   const [isDropDownOpen, setDropDown] = useState<boolean>(false);
@@ -39,7 +36,7 @@ export const SearchHistoryProvider = ({ children }: ProviderProps) => {
     setCurrentIp(currentIp);
   };
 
-  const updateSearchHistory = (newSearch: SearchHistoryItem) => {
+  const updateSearchHistory = (newSearch: SearchItem) => {
     setSearchHistory((prev) => {
       const exists = prev.find((item) => item.ip === newSearch.ip);
       if (exists) return prev;

@@ -5,10 +5,10 @@ import { Spinner } from "./Spinner";
 const LocationResults = () => {
   const { ipState, uiState } = useSearchContext();
   const data = {
-    ip_address: ipState.ip,
-    location: `${ipState.region}, ${ipState.country} `,
-    timezone: `UTC${ipState.timezone}`,
-    isp: ipState.isp || "Uknown",
+    ip_address: ipState.ip ?? "N/A",
+    location: `${ipState.region ?? "Unknown"}, ${ipState.country ?? "Unknown"}`,
+    timezone: `UTC${ipState.timezone ?? ""}`,
+    isp: ipState.isp ?? "Unknown",
   };
 
   return (
