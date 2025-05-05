@@ -25,6 +25,7 @@
   --neutral-50: hsl(0, 0%, 16%);
   --neutral-100: hsl(210, 4%, 31%);
   --neutral-300: hsl(0, 2%, 80%);
+  --neutral-800: hsl(0, 3%, 78%);
   --neutral-900: hsl(0, 0%, 100%);
   --main-bg: #040404;
 }
@@ -37,9 +38,10 @@
 html,
 body {
   transition: all 0.3s ease-in;
+  margin: 0;
+  padding: 0;
 }
-button,
-a {
+button {
   display: flex;
   align-items: center;
   justify-content: center;

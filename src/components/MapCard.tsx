@@ -10,20 +10,23 @@ import { useSearchContext } from "../context/IpSearchContext";
 import { Spinner } from "./Spinner";
 import { useTheme } from "../context/ThemeContext";
 import { useEffect } from "react";
+import { ErrorUI } from "./ErrorUI";
 
 export const MapCard = () => {
-  const { ipState } = useSearchContext();
+  const { ipState, uiState } = useSearchContext();
   const { theme } = useTheme();
-  const { lng, lat, isLoading } = ipState;
+  const { lng, lat } = ipState;
 
   const lightMapUrl =
     "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
   const darkMapUrl =
     "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
-
+  if (uiState.error) {
+    return <ErrorUI />;
+  }
   return (
     <section className="w-full flex items-center relative mt-[-7rem] z-10">
-      {isLoading ? (
+      {uiState.isLoading ? (
         <div className="absolute left-[50%] bottom-[-18rem]">
           <Spinner />
         </div>
