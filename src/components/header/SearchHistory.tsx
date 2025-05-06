@@ -77,9 +77,15 @@ export const SearchHistory = () => {
                       type="button"
                       disabled={canDelete}
                       onClick={() => toggleDialog(item.ip)}
-                      className="disabled:cursor-not-allowed disabled:bg-[var(--neutral-300)] border border-transparent sm:hover:border sm:bg-[var(--red-100)] sm:rounded-lg sm:text-[var(--black)] sm:h-10 sm:px-3.5 font-medium sm:hover:border-[var(--red-100)] sm:hover:bg-transparent"
+                      className="disabled:cursor-not-allowed sm:disabled:bg-[var(--neutral-300)] border border-transparent sm:hover:border sm:bg-[var(--red-100)] sm:rounded-lg sm:text-[var(--black)] sm:h-10 sm:px-3.5 font-medium sm:hover:border-[var(--red-100)] sm:hover:bg-transparent"
                     >
-                      <span className="sm:hidden text-[var(--red-100)] disabled:text-[var(--neutral-300)]">
+                      <span
+                        className={`sm:hidden ${
+                          canDelete
+                            ? "text-[var(--neutral-300)]"
+                            : "text-[var(--red-300)]"
+                        }`}
+                      >
                         <CancelRounded fontSize="medium" />
                       </span>
                       <span className="hidden sm:flex text-white hover:text-[var(--neutral-900)]">
