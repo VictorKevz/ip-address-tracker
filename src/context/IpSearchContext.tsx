@@ -37,7 +37,8 @@ export const SearchProvider = ({ children }: ProviderProps) => {
 
   const [inputValue, setInputValue] = useState<string>(ipState?.ip || "");
   const [isInputValid, setInputValid] = useState<boolean>(true);
-  const { updateSearchHistory } = useSearchHistory();
+  const { updateSearchHistory, searchHistory, handleAlert } =
+    useSearchHistory();
 
   const apiKey = import.meta.env.VITE_API_KEY;
   const baseUrl = `https://geo.ipify.org/api/v2/country,city?apiKey=${apiKey}`;
@@ -49,18 +50,21 @@ export const SearchProvider = ({ children }: ProviderProps) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const input = inputValue?.trim();
-    // validation......................
-    if (!input) {
+
+    // validation
+    if (!input || (!isIP(input) && !isDomain(input))) {
       setInputValid(false);
       return;
     }
-
-    let url = "";
-    if (isIP(input)) {
-      url = `${baseUrl}&ipAddress=${input}`;
-    } else if (isDomain(input)) {
-      url = `${baseUrl}&domain=${input}`;
+    const existingItem = searchHistory.find((item) => item.ip === inputValue);
+    if (existingItem) {
+      setIpState(existingItem);
+      return;
     }
+    const url = isIP(input)
+      ? `${baseUrl}&ipAddress=${input}`
+      : `${baseUrl}&domain=${input}`;
+
     setUIState((prev) => ({
       ...prev,
       isLoading: true,
@@ -89,6 +93,11 @@ export const SearchProvider = ({ children }: ProviderProps) => {
         lng: data?.location?.lng,
       });
       setUIState((prev) => ({ ...prev, isLoading: false }));
+      handleAlert({
+        message: "Location Found",
+        show: true,
+        severity: "success",
+      });
     } catch (error: unknown) {
       const errorMessage =
         error instanceof Error ? error.message : "Unknown error";
@@ -99,6 +108,11 @@ export const SearchProvider = ({ children }: ProviderProps) => {
       }));
 
       setIpState(emptySearchItem);
+      handleAlert({
+        message: "We couldn’t find anything.",
+        show: true,
+        severity: "error",
+      });
     }
   };
   const updateIpState = (currentItem: SearchItem) => {

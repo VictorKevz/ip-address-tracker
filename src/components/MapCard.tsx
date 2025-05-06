@@ -6,11 +6,17 @@ import {
   ZoomControl,
   useMap,
 } from "react-leaflet";
+import L from "leaflet";
+import ReactDOMServer from "react-dom/server";
+
 import { useSearchContext } from "../context/IpSearchContext";
 import { Spinner } from "./Spinner";
 import { useTheme } from "../context/ThemeContext";
 import { useEffect } from "react";
 import { ErrorUI } from "./ErrorUI";
+import { AnimatePresence, motion } from "framer-motion";
+import { viewVariants } from "../variants";
+import { LocationPin } from "@mui/icons-material";
 
 export const MapCard = () => {
   const { ipState, uiState } = useSearchContext();
@@ -21,36 +27,59 @@ export const MapCard = () => {
     "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
   const darkMapUrl =
     "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
-  if (uiState.error) {
-    return <ErrorUI />;
-  }
-  return (
-    <section className="w-full flex items-center relative mt-[-7rem] z-10">
-      {uiState.isLoading ? (
+
+  const customIcon = new L.DivIcon({
+    html: ReactDOMServer.renderToString(
+      <LocationPin
+        style={{ color: "var(--primary-color)", fontSize: "3rem" }}
+      />
+    ),
+    className: "",
+    iconSize: [36, 36],
+    iconAnchor: [20, 0],
+  });
+
+  if (uiState.error) return <ErrorUI />;
+
+  if (uiState.isLoading)
+    return (
+      <section className="w-full flex items-center relative mt-[-7rem] z-10">
         <div className="absolute left-[50%] bottom-[-18rem]">
           <Spinner />
         </div>
-      ) : (
-        <MapContainer
-          center={[lat || 0, lng || 0]}
-          key={ipState.ip}
-          zoom={17}
-          scrollWheelZoom={true}
-          zoomControl={false}
-          style={{ height: "78dvh", width: "100%" }}
-          className="shadow-md cursor-pointer transition-all duration-300 ease-in-out"
+      </section>
+    );
+  return (
+    <section className="w-full flex items-center relative mt-[-7rem] z-10">
+      <AnimatePresence>
+        <motion.div
+          className="shadow-md cursor-pointer w-full"
+          variants={viewVariants(20)}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
         >
-          <TileLayer
-            url={theme === "dark" ? darkMapUrl : lightMapUrl}
-            attribution="&copy; OpenStreetMap contributors"
-          />
-          <ZoomControl position="bottomleft" />
-          <Marker position={[lat || 0, lng || 0]}>
-            <Popup>User Location</Popup>
-          </Marker>
-          <MapUpdater lat={lat || 0} lng={lng || 0} />
-        </MapContainer>
-      )}
+          <MapContainer
+            center={[lat, lng]}
+            key={ipState.ip}
+            zoom={17}
+            scrollWheelZoom={true}
+            zoomControl={false}
+            style={{ height: "78dvh", width: "100%" }}
+            className=""
+          >
+            <TileLayer
+              url={theme === "dark" ? darkMapUrl : lightMapUrl}
+              attribution="&copy; OpenStreetMap contributors"
+            />
+            <ZoomControl position="bottomleft" />
+            <Marker position={[lat, lng]} icon={customIcon}>
+              <Popup>User Location</Popup>
+            </Marker>
+            <MapUpdater lat={lat} lng={lng} />
+          </MapContainer>
+        </motion.div>
+      </AnimatePresence>
     </section>
   );
 };

@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from "react";
-import { SearchHistoryContextType } from "../types/searchHistory";
+import { AlertType, SearchHistoryContextType } from "../types/searchHistory";
 import { ProviderProps, SearchItem } from "../types/IpSearch";
 
 export const SearchHistoryContext = createContext<
@@ -21,14 +21,20 @@ export const SearchHistoryProvider = ({ children }: ProviderProps) => {
     }
     return [];
   };
+  // States.........................................
   const [searchHistory, setSearchHistory] = useState<SearchItem[]>(
     getInitialSearchHistory
   );
   const [isDropDownOpen, setDropDown] = useState<boolean>(false);
   const [showDialog, setDialog] = useState<boolean>(false);
-  const [showAlert, setAlert] = useState<boolean>(false);
+  const [showAlert, setAlert] = useState<AlertType>({
+    show: false,
+    message: "",
+    severity: "success",
+  });
   const [currentIp, setCurrentIp] = useState<string>("");
 
+  // Hnadlers..................................................
   const toggleDropDown = () => {
     setDropDown(!isDropDownOpen);
   };
@@ -36,7 +42,17 @@ export const SearchHistoryProvider = ({ children }: ProviderProps) => {
     setDialog(!showDialog);
     setCurrentIp(currentIp);
   };
-
+  const handleAlert = (update: AlertType) => {
+    setAlert(update);
+    const timeOutId = setTimeout(() => {
+      setAlert({
+        message: update.message,
+        severity: update.severity,
+        show: false,
+      });
+    }, 3000);
+    return () => clearTimeout(timeOutId);
+  };
   const updateSearchHistory = (newSearch: SearchItem) => {
     setSearchHistory((prev) => {
       const exists = prev.find((item) => item.ip === newSearch.ip);
@@ -49,11 +65,12 @@ export const SearchHistoryProvider = ({ children }: ProviderProps) => {
     if (searchHistory.length <= 1) return;
     setSearchHistory((prev) => prev.filter((item) => item.ip != currentIp));
     setDialog(false);
-    setAlert(true);
-    const timeOutId = setInterval(() => {
-      setAlert(false);
-    }, 3500);
-    return () => clearInterval(timeOutId);
+
+    handleAlert({
+      message: "Deleted Successfully",
+      show: true,
+      severity: "success",
+    });
   };
 
   useEffect(() => {
@@ -71,6 +88,7 @@ export const SearchHistoryProvider = ({ children }: ProviderProps) => {
         toggleDialog,
         currentIp,
         showAlert,
+        handleAlert,
       }}
     >
       {children}

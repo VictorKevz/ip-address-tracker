@@ -66,6 +66,7 @@ input:hover {
   cursor: pointer;
   transition: all 0.3s ease-in-out;
 }
-.dropdown {
-  z-index: 500 !important;
+button:hover {
+  transform: translateY(-1.5px);
+  box-shadow: 0 1rem 2rem #4a71dd39;
 }
