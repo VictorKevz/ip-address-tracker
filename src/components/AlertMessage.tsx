@@ -7,7 +7,7 @@ export const AlertMessage = () => {
   const { showAlert } = useSearchHistory();
   return (
     <AnimatePresence>
-      {showAlert && (
+      {showAlert.show && (
         <motion.div
           className="max-w-[20rem] w-full shadow-2xl z-500"
           variants={alertVariants}
@@ -15,8 +15,8 @@ export const AlertMessage = () => {
           animate="visible"
           exit="exit"
         >
-          <Alert variant="filled" severity="success">
-            Deleted Successfully!
+          <Alert variant="filled" severity={showAlert.severity}>
+            {showAlert.message}
           </Alert>
         </motion.div>
       )}

@@ -10,7 +10,7 @@ export const viewVariants = (i: number) => ({
     },
   },
   exit: {
-    y: -i * 5,
+    y: -i * 2,
     opacity: 0,
     transition: {
       type: "tween",

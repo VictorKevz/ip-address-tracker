@@ -39,7 +39,7 @@ export const MapCard = () => {
       <AnimatePresence>
         <motion.div
           className="shadow-md cursor-pointer w-full"
-          variants={viewVariants(30)}
+          variants={viewVariants(20)}
           initial="hidden"
           animate="visible"
           exit="exit"

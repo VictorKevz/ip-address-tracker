@@ -9,5 +9,12 @@ export interface SearchHistoryContextType {
   updateSearchHistory: (newSearch: SearchItem) => void;
   onDelete: (currentIp: string) => void;
   currentIp: string;
-  showAlert: boolean;
+  showAlert: AlertType;
+  handleAlert: (update: AlertType) => void;
+}
+type severityType = "error" | "info" | "success" | "warning";
+export interface AlertType {
+  show: boolean;
+  message: string;
+  severity: severityType;
 }

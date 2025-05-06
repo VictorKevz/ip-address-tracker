@@ -2,7 +2,6 @@ import {
   CancelRounded,
   CheckCircle,
   KeyboardArrowDown,
-  KeyboardArrowUp,
 } from "@mui/icons-material";
 import { useSearchHistory } from "../../context/SearchHistoryContext";
 import { useSearchContext } from "../../context/IpSearchContext";
@@ -24,20 +23,15 @@ export const SearchHistory = () => {
       <button
         type="button"
         onClick={toggleDropDown}
-        className="h-12 w-full sm:w-fit px-3 rounded-lg bg-[var(--neutral-50)] text-[var(--neutral-900)] border border-[var(--neutral-100)] gap-2"
+        className="group h-12 w-full sm:w-fit px-3 rounded-lg bg-[var(--neutral-50)] text-[var(--neutral-900)] border border-[var(--neutral-100)] gap-2 hover:bg-[var(--primary-color)] hover:text-[var(--white)] hover:border-transparent"
       >
         History
-        {isDropDownOpen ? (
-          <KeyboardArrowUp
-            className="text-[var(--primary-color)]"
-            fontSize="large"
-          />
-        ) : (
-          <KeyboardArrowDown
-            className="text-[var(--primary-color)]"
-            fontSize="large"
-          />
-        )}
+        <KeyboardArrowDown
+          className={`text-[var(--primary-color)] group-hover:text-[var(--white)] transition-transform ${
+            isDropDownOpen ? "rotate-180" : ""
+          }`}
+          fontSize="large"
+        />
       </button>
       <AnimatePresence>
         {isDropDownOpen && (

@@ -33,10 +33,10 @@ function App() {
 export default App;
 
 function DialogWrapper() {
-  const { showDialog, currentIp } = useSearchHistory();
+  const { showDialog } = useSearchHistory();
   return (
     <AnimatePresence mode="wait">
-      {showDialog && <WarningDialog key={currentIp} />}
+      {showDialog && <WarningDialog />}
     </AnimatePresence>
   );
 }
