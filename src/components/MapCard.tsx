@@ -6,6 +6,9 @@ import {
   ZoomControl,
   useMap,
 } from "react-leaflet";
+import L from "leaflet";
+import ReactDOMServer from "react-dom/server";
+
 import { useSearchContext } from "../context/IpSearchContext";
 import { Spinner } from "./Spinner";
 import { useTheme } from "../context/ThemeContext";
@@ -13,6 +16,7 @@ import { useEffect } from "react";
 import { ErrorUI } from "./ErrorUI";
 import { AnimatePresence, motion } from "framer-motion";
 import { viewVariants } from "../variants";
+import { LocationPin } from "@mui/icons-material";
 
 export const MapCard = () => {
   const { ipState, uiState } = useSearchContext();
@@ -23,6 +27,17 @@ export const MapCard = () => {
     "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
   const darkMapUrl =
     "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
+
+  const customIcon = new L.DivIcon({
+    html: ReactDOMServer.renderToString(
+      <LocationPin
+        style={{ color: "var(--primary-color)", fontSize: "3rem" }}
+      />
+    ),
+    className: "",
+    iconSize: [36, 36],
+    iconAnchor: [20, 0],
+  });
 
   if (uiState.error) return <ErrorUI />;
 
@@ -58,7 +73,7 @@ export const MapCard = () => {
               attribution="&copy; OpenStreetMap contributors"
             />
             <ZoomControl position="bottomleft" />
-            <Marker position={[lat, lng]}>
+            <Marker position={[lat, lng]} icon={customIcon}>
               <Popup>User Location</Popup>
             </Marker>
             <MapUpdater lat={lat} lng={lng} />
