@@ -28,9 +28,9 @@ const LocationResults = () => {
             {Object.entries(data).map(([key, value], i) => (
               <p
                 key={key}
-                className={`flex flex-col gap-2 md:gap-3.5 items-center md:items-start h-100% relative ${
+                className={`flex flex-col gap-2 md:gap-3.5 items-center text-center md:text-left md:items-start h-100% relative ${
                   i != 0 &&
-                  " before:hidden md:before:flex before:absolute before:left-[-2rem] before:top-[-.75rem] before:bg-[var(--neutral-100)] before:h-20 before:w-0.5"
+                  " before:hidden md:before:flex before:absolute before:left-[-2rem] before:top-[-1.75rem] before:bg-[var(--neutral-100)] before:h-30 before:w-0.5"
                 }`}
               >
                 <span className="font-bold uppercase text-xs text-[var(--neutral-300)] tracking-[1.75px]">
