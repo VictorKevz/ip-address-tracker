@@ -16,7 +16,9 @@ const SearchBar = () => {
     >
       <label
         htmlFor="searchBar"
-        className="w-full flex items-center bg-[var(--neutral-50)] rounded-l-lg relative"
+        className={`w-full flex items-center  rounded-l-lg relative  transition-all duration-300 ease-in-out ${
+          !isInputValid && "border border-[var(--red-100)]"
+        }`}
       >
         <input
           type="text"
@@ -25,9 +27,7 @@ const SearchBar = () => {
           id="searchBar"
           onChange={handleChange}
           placeholder="Search for any IP address or domain"
-          className={`w-full h-14 text-[var(--neutral-900)] pl-4 placeholder:text-[var(--neutral-300)] ${
-            !isInputValid && "border border-[var(--red-100)]"
-          } focus:border border-[var(--primary-color)] rounded-l-2xl caret-[var(--primary-color)]`}
+          className={`w-full h-14 bg-[var(--neutral-50)] rounded-l-lg focus:border border-[var(--primary-color)] text-[var(--neutral-900)] pl-4 placeholder:text-[var(--neutral-300)] caret-[var(--primary-color)]`}
         />
         {!isInputValid && (
           <Error className="text-[var(--red-100)] absolute right-4" />
