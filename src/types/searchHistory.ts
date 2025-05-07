@@ -3,7 +3,7 @@ import { SearchItem } from "./IpSearch";
 export interface SearchHistoryContextType {
   searchHistory: SearchItem[];
   isDropDownOpen: boolean;
-  toggleDropDown: () => void;
+  toggleDropDown: (value: boolean) => void;
   showDialog: boolean;
   toggleDialog: (currentIp: string) => void;
   updateSearchHistory: (newSearch: SearchItem) => void;

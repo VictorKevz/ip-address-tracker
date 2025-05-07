@@ -1,5 +1,12 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { AlertType, SearchHistoryContextType } from "../types/searchHistory";
 import { ProviderProps, SearchItem } from "../types/IpSearch";
 
@@ -8,6 +15,7 @@ export const SearchHistoryContext = createContext<
 >(undefined);
 
 export const SearchHistoryProvider = ({ children }: ProviderProps) => {
+  // Initializer.......................................
   const getInitialSearchHistory = (): SearchItem[] => {
     if (typeof localStorage !== "undefined") {
       const saved = localStorage.getItem("searchHistory");
@@ -24,7 +32,7 @@ export const SearchHistoryProvider = ({ children }: ProviderProps) => {
   // States.........................................
   const [searchHistory, setSearchHistory] = useState<SearchItem[]>(
     getInitialSearchHistory
-  );
+  ); // holds all the searched data - could be limited to 10.
   const [isDropDownOpen, setDropDown] = useState<boolean>(false);
   const [showDialog, setDialog] = useState<boolean>(false);
   const [showAlert, setAlert] = useState<AlertType>({
@@ -32,46 +40,60 @@ export const SearchHistoryProvider = ({ children }: ProviderProps) => {
     message: "",
     severity: "success",
   });
-  const [currentIp, setCurrentIp] = useState<string>("");
+  const [currentIp, setCurrentIp] = useState<string>(""); // holds the ip of the currently deleted item
 
-  // Hnadlers..................................................
-  const toggleDropDown = () => {
-    setDropDown(!isDropDownOpen);
-  };
-  const toggleDialog = (currentIp: string) => {
-    setDialog(!showDialog);
+  // Handlers..................................................
+  const toggleDropDown = useCallback((value: boolean) => {
+    setDropDown(value);
+  }, []);
+
+  const toggleDialog = useCallback((currentIp: string) => {
+    setDialog((prev) => !prev);
     setCurrentIp(currentIp);
-  };
-  const handleAlert = (update: AlertType) => {
+  }, []);
+
+  const alertTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleAlert = useCallback((update: AlertType) => {
     setAlert(update);
-    const timeOutId = setTimeout(() => {
-      setAlert({
-        message: update.message,
-        severity: update.severity,
-        show: false,
-      });
+
+    if (alertTimeout.current) clearTimeout(alertTimeout.current);
+
+    alertTimeout.current = setTimeout(() => {
+      setAlert({ ...update, show: false });
     }, 3000);
-    return () => clearTimeout(timeOutId);
-  };
-  const updateSearchHistory = (newSearch: SearchItem) => {
+  }, []);
+
+  const updateSearchHistory = useCallback((newSearch: SearchItem) => {
     setSearchHistory((prev) => {
       const exists = prev.find((item) => item.ip === newSearch.ip);
       if (exists) return prev;
-      return [...prev, newSearch];
-    });
-  };
 
-  const deleteEntry = (currentIp: string) => {
-    if (searchHistory.length <= 1) return;
-    setSearchHistory((prev) => prev.filter((item) => item.ip != currentIp));
-    setDialog(false);
-
-    handleAlert({
-      message: "Deleted Successfully",
-      show: true,
-      severity: "success",
+      const updated = [...prev, newSearch];
+      return updated.length > 10 ? updated.slice(-10) : updated;
     });
-  };
+  }, []);
+
+  const deleteEntry = useCallback(
+    (currentIp: string) => {
+      setSearchHistory((prev) => {
+        if (prev.length <= 1) return prev;
+        const updated = prev.filter((item) => item.ip !== currentIp);
+
+        if (updated.length !== prev.length) {
+          setDialog(false);
+          handleAlert({
+            message: "Deleted Successfully",
+            show: true,
+            severity: "success",
+          });
+        }
+
+        return updated;
+      });
+    },
+    [handleAlert]
+  );
 
   useEffect(() => {
     localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
