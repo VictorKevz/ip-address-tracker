@@ -25,7 +25,7 @@ This is a React + TypeScript application that tracks and displays IP address geo
 - **Dedicated error UI**
 - **Hover and focus states for all interactive elements**
 - **ARIA attributes for accessibility**
-
+![alt text](public/screenshots/dropdown.png) ![alt text](public/screenshots/modal.png)
 
 ## 🧪 Tech Stack
 
@@ -56,7 +56,7 @@ npm run dev
 ```
 
 ⸻
-
+```
 🗂️ File Structure (simplified)
 
 src/
@@ -68,7 +68,7 @@ src/
 ├── styles/             # Tailwind + index.css
 ├── App.tsx             # App entry
 └── main.tsx            # Vite entry
-
+```
 
 
 ⸻
