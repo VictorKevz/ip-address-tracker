@@ -70,7 +70,7 @@ export const SearchHistoryProvider = ({ children }: ProviderProps) => {
       if (exists) return prev;
 
       const updated = [...prev, newSearch];
-      return updated.length > 10 ? updated.slice(-10) : updated;
+      return updated.length > 6 ? updated.slice(-6) : updated;
     });
   }, []);
 

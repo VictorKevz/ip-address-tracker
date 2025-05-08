@@ -10,8 +10,6 @@ import {
 import {
   IpSearchContextType,
   ProviderProps,
-  SearchUIState,
-  emptySearchItem,
   SearchItem,
 } from "../types/IpSearch";
 import { isIP } from "is-ip";
@@ -24,27 +22,8 @@ export const IpSearchContext = createContext<IpSearchContextType | undefined>(
 );
 
 export const SearchProvider = ({ children }: ProviderProps) => {
-  // Initializer....................................................
-  const getInitialIpState = (): SearchItem => {
-    if (typeof localStorage !== "undefined") {
-      const stored = localStorage.getItem("searchHistory");
-      if (stored) {
-        const parsed = JSON.parse(stored) as SearchItem[];
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed[0];
-        }
-      }
-    }
-    return emptySearchItem;
-  };
-
   // States....................................................
-  const [ipState, setIpState] = useState<SearchItem>(getInitialIpState()); // holds the current searchItem
-  const [uiState, setUIState] = useState<SearchUIState>({
-    isLoading: true,
-    error: null,
-  });
-
+  const { fetchData, ipState, uiState, setIpState, setUIState } = useGeoFetch();
   const [inputValue, setInputValue] = useState<string>(ipState?.ip || ""); // holds what the user types in...
   const [isInputValid, setInputValid] = useState<boolean>(true);
   const { updateSearchHistory, searchHistory, handleAlert } =
@@ -52,7 +31,6 @@ export const SearchProvider = ({ children }: ProviderProps) => {
 
   const apiKey = import.meta.env.VITE_API_KEY;
   const baseUrl = `https://geo.ipify.org/api/v2/country,city?apiKey=${apiKey}`;
-  const { fetchData } = useGeoFetch();
 
   // Handlers....................................................
   const handleSearchInput = useCallback((query: string) => {
@@ -63,14 +41,14 @@ export const SearchProvider = ({ children }: ProviderProps) => {
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      const input = inputValue?.trim();
 
+      const input = inputValue.trim();
       if (!input || (!isIP(input) && !isDomain(input))) {
         setInputValid(false);
         return;
       }
 
-      const existingItem = searchHistory.find((item) => item.ip === inputValue);
+      const existingItem = searchHistory.find((item) => item.ip === input);
       if (existingItem) {
         setIpState(existingItem);
         return;
@@ -80,20 +58,15 @@ export const SearchProvider = ({ children }: ProviderProps) => {
         ? `${baseUrl}&ipAddress=${input}`
         : `${baseUrl}&domain=${input}`;
 
-      setUIState({ isLoading: true, error: null });
-
       const fetchedData = await fetchData(url);
 
-      if (fetchedData) {
-        setIpState(fetchedData);
+      if (fetchedData && fetchedData.ip) {
         handleAlert({
           message: "Location Found",
           show: true,
           severity: "success",
         });
       } else {
-        setIpState(emptySearchItem);
-        setUIState({ isLoading: false, error: "We couldn’t find anything." });
         handleAlert({
           message: "We couldn’t find anything.",
           show: true,
@@ -116,11 +89,6 @@ export const SearchProvider = ({ children }: ProviderProps) => {
     //checks if there's data already and if not it fetches the data
     if (!ipState.ip) {
       fetchData(baseUrl);
-    } else {
-      setUIState((prev) => ({
-        ...prev,
-        isLoading: false,
-      }));
     }
   }, []);
 
