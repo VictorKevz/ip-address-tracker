@@ -69,7 +69,7 @@ export const SearchHistoryProvider = ({ children }: ProviderProps) => {
       const exists = prev.find((item) => item.ip === newSearch.ip);
       if (exists) return prev;
 
-      const updated = [...prev, newSearch];
+      const updated = [newSearch, ...prev];
       return updated.length > 6 ? updated.slice(-6) : updated;
     });
   }, []);
